@@ -12,6 +12,7 @@
     <link rel="shortcut icon" type="image/x-icon" href="assets/imgs/template/favicon.png">
     <link href="assets/css/style.css?v=1.0.0" rel="stylesheet">
     <title>Contate-nos - Flor Baby Fashion Store</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   </head>
   <body>
     <div id="preloader-active">
@@ -262,38 +263,39 @@
           <div class="box-form-contact">
             <h3 class="font-4xl-bold mb-40">Entre em contato
             </h3>
+            <div id="thank-you-message">Obrigado! Seu e-mail foi enviado.</div>
             <div class="row">
               <div class="col-lg-12">
-                <form action="#">
+                <form onsubmit="submitApi(event)">
                   <div class="row">
                     <div class="col-lg-12">
                       <div class="form-group">
-                        <input class="form-control" type="text" placeholder="Seu nome *">
+                        <input class="form-control" id="nome-input" type="text" placeholder="Seu nome *" required title="Informe seu nome.">
                       </div>
                     </div>
                     <div class="col-lg-12">
                       <div class="form-group">
-                        <input class="form-control" type="text" placeholder="Seu email *">
+                        <input class="form-control" id="email-input" type="text" placeholder="Seu email *" required title="Por favor, insira um endereço de e-mail válido.">
                       </div>
                     </div>
                     <div class="col-lg-6">
                       <div class="form-group">
-                        <input class="form-control" type="text" placeholder="Seu telefone">
+                        <input class="form-control" id="telefone-input" type="text" placeholder="Seu telefone" required pattern="\d{10,11}" title="O telefone deve ter 10 ou 11 dígitos." >
                       </div>
                     </div>
                     <div class="col-lg-6">
                       <div class="form-group">
-                        <input class="form-control" type="text" placeholder="Assunto">
+                        <input class="form-control" id="assunto-input" type="text" placeholder="Assunto">
                       </div>
                     </div>
                     <div class="col-lg-12">
                       <div class="form-group">
-                        <textarea class="form-control" rows="6" placeholder="Mensagem / Nota"></textarea>
+                        <textarea class="form-control" id="mensagem-input" rows="6" placeholder="Mensagem / Nota" required title="Por favor, insira sua mensagem."></textarea>
                       </div>
                     </div>
                     <div class="col-lg-12">
                       <div class="form-group">
-                        <button class="btn btn-brand-1-medium">Enviar agora</button>
+                        <button type="submit" class="btn btn-brand-1-medium">Enviar agora</button>
                       </div>
                     </div>
                   </div>
@@ -400,6 +402,8 @@
     </footer>
 
     <!-- section footer -->
+
+
 
     <!-- <div class="box-popup-search perfect-scrollbar">
       <div class="box-search-overlay"></div>
@@ -652,6 +656,64 @@
           </svg></a>
       </div>
     </div> -->
+
+
+<script>
+  async function submitApi(e) {
+      e.preventDefault(); // Evita o comportamento padrão do formulário
+
+      // Obtém os valores dos campos
+      const nome = document.getElementById('nome-input').value;
+      const email = document.getElementById('email-input').value;
+      const telefone = document.getElementById('telefone-input').value;
+      const assunto = document.getElementById('assunto-input').value;
+      const mensagem = document.getElementById('mensagem-input').value;
+
+      // Configura a URL da API e o corpo da requisição
+      const url = "https://wh2m3hibp7.execute-api.us-east-1.amazonaws.com/produc";
+      const body = JSON.stringify({
+          nome: nome,
+          email: email,
+          telefone: telefone,
+          assunto: assunto,
+          mensagem: mensagem
+      });
+
+   
+                
+
+      $.ajax({
+                type: "POST",
+                url: url,
+                dataType: "json",
+                contentType: "application/json, charset=utf-8",
+                data: body,
+                success: function(response) {
+                document.getElementById('nome-input').value = '';
+                document.getElementById('email-input').value = '';
+                document.getElementById('telefone-input').value = '';
+                document.getElementById('assunto-input').value = '';
+                document.getElementById('mensagem-input').value = '';
+
+                // Exibir mensagem de agradecimento
+                const thankYouMessage = document.getElementById('thank-you-message');
+                thankYouMessage.style.display = 'block';
+
+                // Ocultar mensagem após 10 segundos
+                setTimeout(() => {
+                    thankYouMessage.style.display = 'none';
+                }, 10000);
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.error('Erro ao enviar e-mail:', textStatus, errorThrown);
+                    alert("Erro ao enviar e-mail.");
+                }
+            });
+  }
+</script>
+
+
+
     <script src="assets/js/vendors/modernizr-3.6.0.min.js"></script>
     <script src="assets/js/vendors/jquery-3.6.0.min.js"></script>
     <script src="assets/js/vendors/jquery-migrate-3.3.0.min.js"></script>

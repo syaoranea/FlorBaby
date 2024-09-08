@@ -10664,3 +10664,16 @@ h5.item-collapse.collapsed-item {
   border-radius: 5px;
   margin-bottom: 16px;
 }
+
+.btn-feedback {
+  display: flex;
+  justify-content: center;
+}
+
+.table-responsive p {
+  padding-bottom: 16px;
+}
+
+.contact-from-area p {
+  padding-bottom: 16px;
+}
